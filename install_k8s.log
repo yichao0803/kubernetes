@@ -1,0 +1,412 @@
+[0;32m[20220120 14:53:13] [Info] 1.使用脚本自动安装docker...[0m
+# Executing docker install script, commit: 93d2499759296ac1f9c510605fef85052a2c32be
+Delta RPMs disabled because /usr/bin/applydeltarpm not installed.
+已加载插件：fastestmirror
+adding repo from: https://download.docker.com/linux/centos/docker-ce.repo
+grabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo
+repo saved to /etc/yum.repos.d/docker-ce.repo
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.cqu.edu.cn
+ * extras: mirrors.bupt.edu.cn
+ * updates: mirrors.cqu.edu.cn
+元数据缓存已建立
+containerd.io-1.4.12-3.1.el7.x86_64.rpm 的公钥尚未安装
+setsebool:  SELinux is disabled.
+软件包 docker-ce-rootless-extras-20.10.12-3.el7.x86_64 已安装并且是最新版本
+
+================================================================================
+
+To run Docker as a non-privileged user, consider setting up the
+Docker daemon in rootless mode for your user:
+
+    dockerd-rootless-setuptool.sh install
+
+Visit https://docs.docker.com/go/rootless/ to learn about rootless mode.
+
+
+To run the Docker daemon as a fully privileged service, but granting non-root
+users access, refer to https://docs.docker.com/go/daemon-access/
+
+WARNING: Access to the remote API on a privileged Docker daemon is equivalent
+         to root access on the host. Refer to the 'Docker daemon attack surface'
+         documentation for details: https://docs.docker.com/go/attack-surface/
+
+================================================================================
+
+[0;32m[20220120 14:53:13] [Info] 2.启动 Docker CE...[0m
+[0;32m[20220120 14:53:13] [Info] 3.添加镜像加速器...[0m
+[0;32m[20220120 14:53:13] [Info] 4.重新启动服务...[0m
+[0;32m[20220120 14:53:13] [Info] 5.测试 Docker 是否安装正确...[0m
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+[0;32m[20220120 14:53:13] [Info] 6.检测...[0m
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  app: Docker App (Docker Inc., v0.9.1-beta3)
+  buildx: Docker Buildx (Docker Inc., v0.7.1-docker)
+  scan: Docker Scan (Docker Inc., v0.12.0)
+
+Server:
+ Containers: 1
+  Running: 0
+  Paused: 0
+  Stopped: 1
+ Images: 1
+ Server Version: 20.10.12
+ Storage Driver: overlay2
+  Backing Filesystem: xfs
+  Supports d_type: true
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: runc io.containerd.runc.v2 io.containerd.runtime.v1.linux
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 7b11cfaabd73bb80907dd23182b9347b4245eb5d
+ runc version: v1.0.2-0-g52b36a2
+ init version: de40ad0
+ Security Options:
+  seccomp
+   Profile: default
+ Kernel Version: 3.10.0-1160.el7.x86_64
+ Operating System: CentOS Linux 7 (Core)
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 2
+ Total Memory: 1.777GiB
+ Name: titan2
+ ID: KDAY:PIL5:TRVO:XH7H:EGBA:SF6B:AADI:XYPI:JND3:HKMZ:WMVE:6Z6Z
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Registry Mirrors:
+  https://5ajk0rns.mirror.aliyuncs.com/
+ Live Restore Enabled: false
+
+[0;32m[20220120 14:53:13] [Info] 7.安装docker-compose[0m
+[0;32m[20220120 14:53:13] [Info] 8.验证docker-compose是否安装成功...[0m
+docker-compose version 1.27.4, build 40524192
+[0;32m[20220120 14:53:13] [Info] 初始化k8s部署环境...[0m
+[0;32m[20220120 14:53:13] [Info] 关闭防火墙[0m
+[0;32m[20220120 14:53:13] [Info] 关闭selinux[0m
+[0;32m[20220120 14:53:13] [Info] 关闭swap（k8s禁止虚拟内存以提高性能）[0m
+[0;32m[20220120 14:53:13] [Info] 设置网桥参数[0m
+* Applying /usr/lib/sysctl.d/00-system.conf ...
+net.bridge.bridge-nf-call-ip6tables = 0
+net.bridge.bridge-nf-call-iptables = 0
+net.bridge.bridge-nf-call-arptables = 0
+* Applying /usr/lib/sysctl.d/10-default-yama-scope.conf ...
+kernel.yama.ptrace_scope = 0
+* Applying /usr/lib/sysctl.d/50-default.conf ...
+kernel.sysrq = 16
+kernel.core_uses_pid = 1
+kernel.kptr_restrict = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.promote_secondaries = 1
+net.ipv4.conf.all.promote_secondaries = 1
+fs.protected_hardlinks = 1
+fs.protected_symlinks = 1
+* Applying /etc/sysctl.d/99-sysctl.conf ...
+* Applying /etc/sysctl.d/k8s.conf ...
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+* Applying /etc/sysctl.conf ...
+net.ipv4.ip_forward = 1
+[0;32m[20220120 14:53:13] [Info] 时间同步[0m
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.cqu.edu.cn
+ * extras: mirrors.bupt.edu.cn
+ * updates: mirrors.cqu.edu.cn
+正在解决依赖关系
+--> 正在检查事务
+---> 软件包 ntpdate.x86_64.0.4.2.6p5-29.el7.centos.2 将被 安装
+--> 解决依赖关系完成
+
+依赖关系解决
+
+================================================================================
+ Package        架构          版本                            源           大小
+================================================================================
+正在安装:
+ ntpdate        x86_64        4.2.6p5-29.el7.centos.2         base         87 k
+
+事务概要
+================================================================================
+安装  1 软件包
+
+总下载量：87 k
+安装大小：121 k
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  正在安装    : ntpdate-4.2.6p5-29.el7.centos.2.x86_64                      1/1 
+  验证中      : ntpdate-4.2.6p5-29.el7.centos.2.x86_64                      1/1 
+
+已安装:
+  ntpdate.x86_64 0:4.2.6p5-29.el7.centos.2                                      
+
+完毕！
+20 Jan 14:55:35 ntpdate[8742]: adjust time server 20.189.79.72 offset -0.098344 sec
+[0;32m[20220120 14:53:13] [Info] 添加k8s安装源...[0m
+[0;32m[20220120 14:53:13] [Info] 安装kubelet kubeadmin kubectl...[0m
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.cqu.edu.cn
+ * extras: mirrors.bupt.edu.cn
+ * updates: mirrors.cqu.edu.cn
+正在解决依赖关系
+--> 正在检查事务
+---> 软件包 kubeadm.x86_64.0.1.19.4-0 将被 安装
+--> 正在处理依赖关系 kubernetes-cni >= 0.8.6，它被软件包 kubeadm-1.19.4-0.x86_64 需要
+--> 正在处理依赖关系 cri-tools >= 1.13.0，它被软件包 kubeadm-1.19.4-0.x86_64 需要
+---> 软件包 kubectl.x86_64.0.1.19.4-0 将被 安装
+---> 软件包 kubelet.x86_64.0.1.19.4-0 将被 安装
+--> 正在处理依赖关系 socat，它被软件包 kubelet-1.19.4-0.x86_64 需要
+--> 正在处理依赖关系 conntrack，它被软件包 kubelet-1.19.4-0.x86_64 需要
+--> 正在检查事务
+---> 软件包 conntrack-tools.x86_64.0.1.4.4-7.el7 将被 安装
+--> 正在处理依赖关系 libnetfilter_cttimeout.so.1(LIBNETFILTER_CTTIMEOUT_1.1)(64bit)，它被软件包 conntrack-tools-1.4.4-7.el7.x86_64 需要
+--> 正在处理依赖关系 libnetfilter_cttimeout.so.1(LIBNETFILTER_CTTIMEOUT_1.0)(64bit)，它被软件包 conntrack-tools-1.4.4-7.el7.x86_64 需要
+--> 正在处理依赖关系 libnetfilter_cthelper.so.0(LIBNETFILTER_CTHELPER_1.0)(64bit)，它被软件包 conntrack-tools-1.4.4-7.el7.x86_64 需要
+--> 正在处理依赖关系 libnetfilter_queue.so.1()(64bit)，它被软件包 conntrack-tools-1.4.4-7.el7.x86_64 需要
+--> 正在处理依赖关系 libnetfilter_cttimeout.so.1()(64bit)，它被软件包 conntrack-tools-1.4.4-7.el7.x86_64 需要
+--> 正在处理依赖关系 libnetfilter_cthelper.so.0()(64bit)，它被软件包 conntrack-tools-1.4.4-7.el7.x86_64 需要
+---> 软件包 cri-tools.x86_64.0.1.19.0-0 将被 安装
+---> 软件包 kubernetes-cni.x86_64.0.0.8.7-0 将被 安装
+---> 软件包 socat.x86_64.0.1.7.3.2-2.el7 将被 安装
+--> 正在检查事务
+---> 软件包 libnetfilter_cthelper.x86_64.0.1.0.0-11.el7 将被 安装
+---> 软件包 libnetfilter_cttimeout.x86_64.0.1.0.0-7.el7 将被 安装
+---> 软件包 libnetfilter_queue.x86_64.0.1.0.2-2.el7_2 将被 安装
+--> 解决依赖关系完成
+
+依赖关系解决
+
+================================================================================
+ Package                    架构       版本                源              大小
+================================================================================
+正在安装:
+ kubeadm                    x86_64     1.19.4-0            kubernetes     8.3 M
+ kubectl                    x86_64     1.19.4-0            kubernetes     9.0 M
+ kubelet                    x86_64     1.19.4-0            kubernetes      19 M
+为依赖而安装:
+ conntrack-tools            x86_64     1.4.4-7.el7         base           187 k
+ cri-tools                  x86_64     1.19.0-0            kubernetes     5.7 M
+ kubernetes-cni             x86_64     0.8.7-0             kubernetes      19 M
+ libnetfilter_cthelper      x86_64     1.0.0-11.el7        base            18 k
+ libnetfilter_cttimeout     x86_64     1.0.0-7.el7         base            18 k
+ libnetfilter_queue         x86_64     1.0.2-2.el7_2       base            23 k
+ socat                      x86_64     1.7.3.2-2.el7       base           290 k
+
+事务概要
+================================================================================
+安装  3 软件包 (+7 依赖软件包)
+
+总下载量：62 M
+安装大小：264 M
+Downloading packages:
+--------------------------------------------------------------------------------
+总计                                               2.9 MB/s |  62 MB  00:21     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  正在安装    : libnetfilter_cthelper-1.0.0-11.el7.x86_64                  1/10 
+  正在安装    : socat-1.7.3.2-2.el7.x86_64                                 2/10 
+  正在安装    : libnetfilter_cttimeout-1.0.0-7.el7.x86_64                  3/10 
+  正在安装    : kubectl-1.19.4-0.x86_64                                    4/10 
+  正在安装    : libnetfilter_queue-1.0.2-2.el7_2.x86_64                    5/10 
+  正在安装    : conntrack-tools-1.4.4-7.el7.x86_64                         6/10 
+  正在安装    : kubernetes-cni-0.8.7-0.x86_64                              7/10 
+  正在安装    : kubelet-1.19.4-0.x86_64                                    8/10 
+  正在安装    : cri-tools-1.19.0-0.x86_64                                  9/10 
+  正在安装    : kubeadm-1.19.4-0.x86_64                                   10/10 
+  验证中      : cri-tools-1.19.0-0.x86_64                                  1/10 
+  验证中      : kubelet-1.19.4-0.x86_64                                    2/10 
+  验证中      : conntrack-tools-1.4.4-7.el7.x86_64                         3/10 
+  验证中      : kubernetes-cni-0.8.7-0.x86_64                              4/10 
+  验证中      : libnetfilter_queue-1.0.2-2.el7_2.x86_64                    5/10 
+  验证中      : kubeadm-1.19.4-0.x86_64                                    6/10 
+  验证中      : kubectl-1.19.4-0.x86_64                                    7/10 
+  验证中      : libnetfilter_cttimeout-1.0.0-7.el7.x86_64                  8/10 
+  验证中      : socat-1.7.3.2-2.el7.x86_64                                 9/10 
+  验证中      : libnetfilter_cthelper-1.0.0-11.el7.x86_64                 10/10 
+
+已安装:
+  kubeadm.x86_64 0:1.19.4-0 kubectl.x86_64 0:1.19.4-0 kubelet.x86_64 0:1.19.4-0
+
+作为依赖被安装:
+  conntrack-tools.x86_64 0:1.4.4-7.el7                                          
+  cri-tools.x86_64 0:1.19.0-0                                                   
+  kubernetes-cni.x86_64 0:0.8.7-0                                               
+  libnetfilter_cthelper.x86_64 0:1.0.0-11.el7                                   
+  libnetfilter_cttimeout.x86_64 0:1.0.0-7.el7                                   
+  libnetfilter_queue.x86_64 0:1.0.2-2.el7_2                                     
+  socat.x86_64 0:1.7.3.2-2.el7                                                  
+
+完毕！
+[0;32m[20220120 14:53:13] [Info] 确认kubelet kubeadmin kubectl是否安装成功[0m
+kubelet.x86_64                       1.19.4-0                       @kubernetes 
+kubeadm.x86_64                       1.19.4-0                       @kubernetes 
+kubectl.x86_64                       1.19.4-0                       @kubernetes 
+Kubernetes v1.19.4
+[0;32m[20220120 14:53:13] [Info] 安装kubernetes master...[0m
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.cqu.edu.cn
+ * extras: mirrors.bupt.edu.cn
+ * updates: mirrors.cqu.edu.cn
+软件包 net-tools-2.0-0.25.20131004git.el7.x86_64 已安装并且是最新版本
+无须任何处理
+[init] Using Kubernetes version: v1.19.4
+[preflight] Running pre-flight checks
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local titan2] and IPs [10.96.0.1 192.168.55.129]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [localhost titan2] and IPs [192.168.55.129 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [localhost titan2] and IPs [192.168.55.129 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Starting the kubelet
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+[apiclient] All control plane components are healthy after 17.003462 seconds
+[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config-1.19" in namespace kube-system with the configuration for the kubelets in the cluster
+[upload-certs] Skipping phase. Please see --upload-certs
+[mark-control-plane] Marking the node titan2 as control-plane by adding the label "node-role.kubernetes.io/master=''"
+[mark-control-plane] Marking the node titan2 as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[bootstrap-token] Using token: um91m9.7ztrem6biilgcc1s
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.55.129:6443 --token um91m9.7ztrem6biilgcc1s \
+    --discovery-token-ca-cert-hash sha256:d4cf3f5a2143e10a19d4d10c1396786021b2cb0c40d712bd9859628777c00007 
+[0;32m[20220120 14:53:13] [Info] 安装网络插件flannel...[0m
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.cqu.edu.cn
+ * extras: mirrors.bupt.edu.cn
+ * updates: mirrors.cqu.edu.cn
+正在解决依赖关系
+--> 正在检查事务
+---> 软件包 wget.x86_64.0.1.14-18.el7_6.1 将被 安装
+--> 解决依赖关系完成
+
+依赖关系解决
+
+================================================================================
+ Package        架构             版本                      源              大小
+================================================================================
+正在安装:
+ wget           x86_64           1.14-18.el7_6.1           base           547 k
+
+事务概要
+================================================================================
+安装  1 软件包
+
+总下载量：547 k
+安装大小：2.0 M
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  正在安装    : wget-1.14-18.el7_6.1.x86_64                                 1/1 
+  验证中      : wget-1.14-18.el7_6.1.x86_64                                 1/1 
+
+已安装:
+  wget.x86_64 0:1.14-18.el7_6.1                                                 
+
+完毕！
+podsecuritypolicy.policy/psp.flannel.unprivileged created
+clusterrole.rbac.authorization.k8s.io/flannel created
+clusterrolebinding.rbac.authorization.k8s.io/flannel created
+serviceaccount/flannel created
+configmap/kube-flannel-cfg created
+daemonset.apps/kube-flannel-ds created
+[0;32m[20220120 14:53:13] [Info] 去污点...[0m
+node/titan2 untainted

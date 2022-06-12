@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-ingress
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-ingress 
+  namespace: nginx-ingress
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: default-server-secret
+  namespace: nginx-ingress
+type: Opaque
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURWekNDQWorZ0F3SUJBZ0lKQUtaRTllUmZaRlJSTUEwR0NTcUdTSWIzRFFFQkN3VUFNRUl4SHpBZEJnTlYKQkFNTUZrNUhTVTVZU1c1bmNtVnpjME52Ym5SeWIyeHNaWEl4SHpBZEJnTlZCQW9NRms1SFNVNVlTVzVuY21WegpjME52Ym5SeWIyeHNaWEl3SGhjTk1qRXdNVEkxTURjeE9USTRXaGNOTXpFd01USXpNRGN4T1RJNFdqQkNNUjh3CkhRWURWUVFEREJaT1IwbE9XRWx1WjNKbGMzTkRiMjUwY205c2JHVnlNUjh3SFFZRFZRUUtEQlpPUjBsT1dFbHUKWjNKbGMzTkRiMjUwY205c2JHVnlNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQQp0M1hVcFhYcUdDUTJBblRTd21DMjZ1bzRudGhmQWNYd3U4REdLUVlBSGQ1VlFKaDRPdStSWEJ4M1BTMVlTY3VNCmVTVXExV1R1ejQzRW9tRHZOWkdHcmNkSlJrWDhjYk05WWNBanlWZ0pnd0cxVFB0OUl2ZzVibWJBWE1INnR3OTUKRGJiOFFlSWVSeXBUWVl6bXJmMnJxaU45aXdROUMzSHhySDc3ektoZ1hxT20vZ09CdGpWRVhKc3lSeEpTcUdJZQpiNUp6NENJK0FzaUZGYWRjMHZhcmpvei8wTTJuS1JaU3VUQThmRHhsMUpTZlVJc2hYWUt1YmZvMzh0ck1paHFoCnh2Q09SMWFJUmxPaDNDTXAyekRoUm9nNHpjTFdyUHBXQnlyVkN2aGVBWWp2MitpWHlTQ1MyU2pRbmV4UE43aWoKUE5Kc0hpZVZMdVE0R0VCYTJ3RkxFUUlEQVFBQm8xQXdUakFkQmdOVkhRNEVGZ1FVSllDdmVtZFpFQVM4eGIxUAo3bVo3YjBGRFViZ3dId1lEVlIwakJCZ3dGb0FVSllDdmVtZFpFQVM4eGIxUDdtWjdiMEZEVWJnd0RBWURWUjBUCkJBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQW1Nc2QwbVRtaFBXc2pvejh0NUN2dTdXMVNhT2EKTzRQTlRNakJ3eEpHZUt1ZUlGNytSZWR3WUVaWXJ0M1hiY0NHRDAxMklFMjNJK1k0eWs4ekFkdWxtMmtZRUdPZQp6UDQyRGpCcFpZelhiUmpkQkY0aVFlMWR6K0xVWGJyK096bWFoRjMwOW5MVU5KVStNTStHbVVUbmlwdy90dGxnCkszNlI3WWpuSzNpelhqaE8rdFJvWnp5eWhsdDRVcmQxYTN0Tkxacy8yNk14akZ2aGlOWUNNSmh4blMzUlVzWXYKdllxUUw0WkQ1b0VaTVIvUEN3VlR3OHpTUEVuU0hlMnFLT2dmZGlOYTEwTHpYYzc0eGNmK2FZTmlvcndNdEpXdwo5NnR1WExUN3ZNMW11Ky9oM3BCR0RaMFY3SitwZTlvV2daZSsrNVVINyswK2tpSlN5S1VCN29LMHN3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ==
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRQzNkZFNsZGVvWUpEWUMKZE5MQ1lMYnE2amllMkY4QnhmQzd3TVlwQmdBZDNsVkFtSGc2NzVGY0hIYzlMVmhKeTR4NUpTclZaTzdQamNTaQpZTzgxa1lhdHgwbEdSZnh4c3oxaHdDUEpXQW1EQWJWTSszMGkrRGx1WnNCY3dmcTNEM2tOdHZ4QjRoNUhLbE5oCmpPYXQvYXVxSTMyTEJEMExjZkdzZnZ2TXFHQmVvNmIrQTRHMk5VUmNtekpIRWxLb1loNXZrblBnSWo0Q3lJVVYKcDF6UzlxdU9qUC9RemFjcEZsSzVNRHg4UEdYVWxKOVFpeUZkZ3E1dCtqZnkyc3lLR3FIRzhJNUhWb2hHVTZIYwpJeW5iTU9GR2lEak53dGFzK2xZSEt0VUsrRjRCaU8vYjZKZkpJSkxaS05DZDdFODN1S004MG13ZUo1VXU1RGdZClFGcmJBVXNSQWdNQkFBRUNnZ0VBQlAvbkRhTksvK0ZzdjJCanBmeHd2N0ltWE4zVXFQMjE4OGZySG84VlRic1QKWTdGRUJZY2wxUGJKb1JjdFFzV1RUSEhnMnZQbk5pek00UWYzUE9SOFlSdi9PVFVMRGlZdVZBMmliQWhFS2hmUAowd3MvZThaNytqQStxY2gzaHFtYlNPNWxyWDMyQ1VaMEEwS052c3djODRRSUZkUEZ2aHdhMC9LWjloZlltSHVkCmFOcGcvbzJuS3dSUVJSYjZYVkpsWWNjTHcvMmE1VzdQMGM0NENWWnI0VDh5MEErWHBUaTF3YUh6VlloQTZOc1QKemE1emJBS3ljMjZ2NWRhQ3VCT1JhYjkzWTFIUFRjOG9VRGIwR1VQa3BNd2dOaW9TV01rakNHRzBWWGtRUFE4NwplWlVteDNrbXNCVDF6RGtPR3pnNm9oSmlpSVQvcFhoVWVIckc1K0doWVFLQmdRRG5vUE0xQmNkeFArTGpMWDVrCnJqamxuSzA3SlQ3N0RlZ0o4VmtUQU90VDQ2cmJVUGxTT0VQTEV4ZUF6dnBkM3VWNkYwa1dYcDI0L0oydlZrSXcKTklQOWJxZ0RQYzBldFdhT0hLMHloanRuM1N1VTJreGtaQTBGN3lHNEFnTzU5SlZidWNnYWpVOStKcDc0TEdHTQprVmUrc09WMGlNVDRmWGMyQzJLUWJtNlduUUtCZ1FES3cyL0lyM25ucUI0dU44bFVSdUZ6MnBNQytTK3RLZlFVCi8xSEFSODAvRDZOYU5xdGhKcXFLd015Z091OGVjcTBMVUhFdm43T1ZyTk9aYzBHcktFQzJnTjF6YXRXVURHcWYKY3J5NnovRjVVQVkwOTI5K004bUJMeWFKeldudWtYaUUwcURlQ2p0cDh4Y3hiZnJOZ1JBU1h3NytudW1jb0RxUAoxb0dSMnQyaUJRS0JnUUNRS1U5Vlg5eHFzdDF1a1VFS1Bwanc1NXUxcFEvV3h5ZjFFRDVsSW54VXdPejFCU2UzCnNZY1lIRERUblg2YjcvK1pCbWNad2hlZUs3T2tqaVl4eEcybHpUcEtraXRaQW9QcXpSUkt6dHFvWVRJZnVlSXoKMVVWNXZRU2FkcjZFL1NIOGJkdUtFd3MzczZmYlJCd09sZU1ycndPUWpSTXlxVHdKNmZvVmRIWGx6UUtCZ0RCUwp3WnBmajdzUkN4aFN2VTJ6a3Rtc2x1clhmbkJUbGxOR3dqSUVLcnREdTlldFBjenFqU3lDWklJdmFYdWxNdTZHClhtTk9PVnVMaytaM1hJZ3hFTE11SlJqenRqRVJnSHU5dVpNQUtmbVNnOWd0dkVta2gvcWN4UitFY0NHbVU4VzcKK1JEUitYVDN0V2hYWUxXSGM5QWREWkxMUnJ2SVNBeXR2N1dHSnRvTkFvR0JBSlJPMzhxOVhuRHZBeEVRUzdpWgphd2dOWFA2TnBiSnVIeUo0cDJ4VldIV0N4VDhrL0E3eDVrb0FrTEpudTUvRE10d0pVL09ZRUpPY1k1b0l2UUVsCnAybWkxM3dEcVpvNml4d2kvU3h5T2xRQ2ZmNHBjNTlTUzE1WVM1RGVEeVVuakcwNTNha2VyQ3R5TGQ4Z2xnOUYKSTE2Y05TQXdTbDFvVi9KM21qOGdzZHpmCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0=
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+  namespace: nginx-ingress
+data:
+  client-max-body-size: "0"
+  server-names-hash-bucket-size: "1024"
+
+
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: nginx-ingress
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - list
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - extensions
+  resources:
+  - ingresses
+  verbs:
+  - list
+  - watch
+  - get
+- apiGroups:
+  - "extensions"
+  resources:
+  - ingresses/status
+  verbs:
+  - update
+- apiGroups:
+  - k8s.nginx.org
+  resources:
+  - virtualservers
+  - virtualserverroutes
+  verbs:
+  - list
+  - watch
+  - get
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: nginx-ingress
+subjects:
+- kind: ServiceAccount
+  name: nginx-ingress
+  namespace: nginx-ingress
+roleRef:
+  kind: ClusterRole
+  name: nginx-ingress
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-ingress
+  namespace: nginx-ingress
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9113"
+spec:
+  selector:
+    matchLabels:
+      app: nginx-ingress
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+    spec:
+      serviceAccountName: nginx-ingress
+      containers:
+      - image: nginx/nginx-ingress:1.5.5
+        imagePullPolicy: IfNotPresent
+        name: nginx-ingress
+        ports:
+        - name: http
+          containerPort: 80
+          hostPort: 80
+        - name: https
+          containerPort: 443
+          hostPort: 443
+        - name: prometheus
+          containerPort: 9113
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        args:
+          - -nginx-configmaps=$(POD_NAMESPACE)/nginx-config
+          - -default-server-tls-secret=$(POD_NAMESPACE)/default-server-secret
+          - -enable-prometheus-metrics
